@@ -1,0 +1,13 @@
+{
+  "deno.enable": false,
+  "cSpell.words": ["browserslist", "posttest", "todos"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "flow.useNPMPackagedFlow": true,
+  "javascript.validate.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript"]
+}

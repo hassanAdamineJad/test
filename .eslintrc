@@ -1,16 +1,19 @@
 {
-    "parser": "babel-eslint",
-    "extends": "react",
-    "env": {
-      "browser": true,
-      "node": true
-    },
-    "rules": {
-      "semi": [2, "always"]
+  "parser": "babel-eslint",
+  "extends": "react",
+  "env": {
+    "browser": true,
+    "node": true
   },
-    "settings": {
-      "react": {
-        "version": "detect"
-      }
+  "rules": {
+    "semi": "warn",
+    "indent": ["error", 2],
+    "space-before-function-paren": 0,
+    "no-use-before-define": 0
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
     }
   }
+}
