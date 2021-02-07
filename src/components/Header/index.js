@@ -4,13 +4,7 @@ import { store } from "../../store/store";
 import { CHANGE_RESULT } from "../../store/constant";
 //UI
 import { fade, makeStyles } from "@material-ui/core/styles";
-import {
-  TextField,
-  AppBar,
-  Toolbar,
-  Typography,
-  InputBase,
-} from "@material-ui/core";
+import { AppBar, Toolbar, Container, InputBase } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 //Helper
 import { onlyUniqueArray } from "../../utils/helper";
@@ -87,24 +81,25 @@ export default function Header() {
   return (
     <div className={classes.grow}>
       <AppBar position="static">
-        <Toolbar>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+        <Container>
+          <Toolbar>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                onChange={handleSearch}
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ "aria-label": "search" }}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              onChange={handleSearch}
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            {/* <IconButton aria-label="show 4 new mails" color="inherit">
+            <div className={classes.grow} />
+            <div className={classes.sectionDesktop}>
+              {/* <IconButton aria-label="show 4 new mails" color="inherit">
             <Badge badgeContent={4} color="secondary">
               <MailIcon />
             </Badge>
@@ -124,9 +119,9 @@ export default function Header() {
           >
             <AccountCircle />
           </IconButton> */}
-          </div>
-          <div className={classes.sectionMobile}>
-            {/* <IconButton
+            </div>
+            <div className={classes.sectionMobile}>
+              {/* <IconButton
             aria-label="show more"
             aria-controls={mobileMenuId}
             aria-haspopup="true"
@@ -135,8 +130,9 @@ export default function Header() {
           >
             <MoreIcon />
           </IconButton> */}
-          </div>
-        </Toolbar>
+            </div>
+          </Toolbar>
+        </Container>
       </AppBar>
     </div>
   );

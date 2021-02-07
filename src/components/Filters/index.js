@@ -1,22 +1,22 @@
 import React, { useState, useContext } from "react";
 //Store
 import { store } from "../../store/store";
-import { CHANGE_RESULT } from "../../store/constant";
+import { CHANGE_RESULT, CURRENT_CITY_INDEX } from "../../store/constant";
 // UI
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, CardActions, Typography } from "@material-ui/core";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 275,
-    marginBottom: 15,
+    // minWidth: 275,
+    margin: theme.spacing(1, 0, 1, 0),
   },
   arrow: {
     border: "solid black",
-    borderWidth: " 0 2px 2px 0",
+    borderWidth: "0 2px 2px 0",
     display: "inline-block",
-    padding: "3px",
-    marginLeft: "3px",
+    padding: theme.spacing(0.3),
+    marginLeft: theme.spacing(1),
   },
   arrowUp: {
     transform: "rotate(-135deg)",
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   title: {
     fontSize: 14,
   },
-});
+}));
 export default function Filters() {
   const classes = useStyles();
   const globalState = useContext(store);
@@ -42,6 +42,7 @@ export default function Filters() {
     } else {
       newList = list.sort((a, b) => (a[field] < b[field] ? 1 : -1));
     }
+    dispatch({ type: CURRENT_CITY_INDEX, value: 0 });
     return dispatch({ type: CHANGE_RESULT, value: newList });
   };
 

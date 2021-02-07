@@ -1,9 +1,15 @@
 import React, { createContext, useReducer } from "react";
-import { GET_CITY, CHANGE_RESULT, GET_CITY_FAIL } from "./constant";
+import {
+  GET_CITY,
+  CHANGE_RESULT,
+  GET_CITY_FAIL,
+  CURRENT_CITY_INDEX,
+} from "./constant";
 
 const initialState = {
   city: [],
   resultSearch: [],
+  currentCityIndex: 0,
   error: false,
 };
 const store = createContext(initialState);
@@ -18,6 +24,8 @@ const StateProvider = ({ children }) => {
         return { ...state, city: [], error: true };
       case CHANGE_RESULT:
         return { ...state, resultSearch: action.value };
+      case CURRENT_CITY_INDEX:
+        return { ...state, currentCityIndex: action.value };
       default:
         throw new Error();
     }

@@ -1,14 +1,45 @@
 import React, { useEffect, useContext } from "react";
 //Store
 import { store } from "../../store/store";
-import { CHANGE_RESULT, GET_CITY, GET_CITY_FAIL } from "../../store/constant";
+import {
+  CHANGE_RESULT,
+  GET_CITY,
+  GET_CITY_FAIL,
+  CURRENT_CITY_INDEX,
+} from "../../store/constant";
 // API
 import axios from "axios";
 import { BaseUrl } from "../../utils/config";
 // CMP
-import { Card, Filters } from "../../components";
+import { List, Filters } from "../../components";
+//UI
+import { makeStyles } from "@material-ui/core/styles";
+import { Paper, Typography } from "@material-ui/core";
+
+// Styles
+const useStyles = makeStyles((theme) => ({
+  filterBox: {
+    flexGrow: 1,
+  },
+  content: {
+    display: "flex",
+  },
+  sideBar: {},
+  result: {
+    width: "100%",
+    maxHeight: "255px",
+    padding: theme.spacing(2.4, 1),
+  },
+  paper: {
+    width: "100%",
+    height: "100%",
+    padding: theme.spacing(2),
+  },
+}));
 
 const Home = () => {
+  const classes = useStyles();
+
   const globalState = useContext(store);
   const { state, dispatch } = globalState;
   useEffect(() => {
@@ -25,14 +56,60 @@ const Home = () => {
       dispatch({ type: GET_CITY_FAIL, value: e });
     }
   };
+  const handleReviewCity = (index) => {
+    dispatch({ type: CURRENT_CITY_INDEX, value: index });
+  };
 
   return (
     <>
-      <div>
+      <div className={classes.filterBox}>
         <Filters />
       </div>
-      <div>
-        <Card data={state.resultSearch} />
+      <div className={classes.content}>
+        <div className={classes.sideBar}>
+          <List
+            data={state.resultSearch}
+            currentCityIndex={state.currentCityIndex}
+            onClick={handleReviewCity}
+          />
+        </div>
+        <div className={classes.result}>
+          <Paper component="div" elevation={3} className={classes.paper}>
+            <Typography variant="h5" component="div">
+              {state.resultSearch[state.currentCityIndex]?.city}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="div">
+              Provence:
+              <Typography variant="h6" color="textPrimary" component="span">
+                {state.resultSearch[state.currentCityIndex]?.admin_name}
+              </Typography>
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="div">
+              capital:
+              <Typography variant="h6" color="textPrimary" component="span">
+                {state.resultSearch[state.currentCityIndex]?.capital}
+              </Typography>
+            </Typography>{" "}
+            <Typography variant="body2" color="textSecondary" component="div">
+              population:
+              <Typography variant="h6" color="textPrimary" component="span">
+                {state.resultSearch[state.currentCityIndex]?.population}
+              </Typography>
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="div">
+              Lat:
+              <Typography variant="h6" color="textPrimary" component="span">
+                {state.resultSearch[state.currentCityIndex]?.lat}
+              </Typography>
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="div">
+              Lng:
+              <Typography variant="h6" color="textPrimary" component="span">
+                {state.resultSearch[state.currentCityIndex]?.lng}
+              </Typography>
+            </Typography>
+          </Paper>
+        </div>
       </div>
     </>
   );

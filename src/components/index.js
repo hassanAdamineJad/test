@@ -1,5 +1,5 @@
-import Card from "./Card";
+import List from "./List";
 import Header from "./Header";
 import Filters from "./Filters";
 
-export { Card, Header, Filters };
+export { List, Header, Filters };
