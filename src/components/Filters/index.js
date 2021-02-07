@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+//Store
+import { store } from "../../store/store";
+import { CHANGE_RESULT } from "../../store/constant";
+// UI
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, CardActions, Typography } from "@material-ui/core";
 
@@ -24,10 +28,23 @@ const useStyles = makeStyles({
     fontSize: 14,
   },
 });
-export default function Filters({ handleSort }) {
+export default function Filters() {
   const classes = useStyles();
+  const globalState = useContext(store);
+  const { state, dispatch } = globalState;
   const [typeSortCity, setTypeSortCity] = useState(false);
   const [typeSortPopulation, setTypeSortPopulation] = useState(false);
+
+  const handleSort = (list, field, type) => {
+    let newList;
+    if (type === "asc") {
+      newList = list.sort((a, b) => (a[field] > b[field] ? 1 : -1));
+    } else {
+      newList = list.sort((a, b) => (a[field] < b[field] ? 1 : -1));
+    }
+    return dispatch({ type: CHANGE_RESULT, value: newList });
+  };
+
   return (
     <Card className={classes.root}>
       <CardActions>
@@ -36,7 +53,11 @@ export default function Filters({ handleSort }) {
           size="small"
           variant="contained"
           onClick={() => {
-            handleSort("city", typeSortCity ? "asc" : "desc");
+            handleSort(
+              state.resultSearch,
+              "city",
+              typeSortCity ? "asc" : "desc"
+            );
             setTypeSortCity(!typeSortCity);
           }}
         >
@@ -51,7 +72,11 @@ export default function Filters({ handleSort }) {
           size="small"
           variant="contained"
           onClick={() => {
-            handleSort("population", typeSortPopulation ? "asc" : "desc");
+            handleSort(
+              state.resultSearch,
+              "population",
+              typeSortPopulation ? "asc" : "desc"
+            );
             setTypeSortPopulation(!typeSortPopulation);
           }}
         >

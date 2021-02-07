@@ -7,8 +7,6 @@ import axios from "axios";
 import { BaseUrl } from "../../utils/config";
 // CMP
 import { Search, Card, Filters } from "../../components";
-//Helper
-import { onlyUniqueArray } from "../../utils/helper";
 
 const Home = () => {
   const globalState = useContext(store);
@@ -28,40 +26,11 @@ const Home = () => {
     }
   };
 
-  const handleSearch = (e) => {
-    const keyword = e.target.value;
-    dispatch({
-      type: CHANGE_RESULT,
-      value: searchArrayWithKeyAndKeyword(state.city, "city", keyword)
-        .concat(searchArrayWithKeyAndKeyword(state.city, "admin_name", keyword))
-        .filter(onlyUniqueArray),
-    });
-  };
-  const searchArrayWithKeyAndKeyword = (array, key, keyword) => {
-    return array.filter(
-      (item) =>
-        String(item[key]).toLowerCase().indexOf(keyword.toLowerCase()) > -1
-    );
-  };
-  const handleSort = (list, field, type) => {
-    let newList;
-    if (type === "asc") {
-      newList = list.sort((a, b) => (a[field] > b[field] ? 1 : -1));
-    } else {
-      newList = list.sort((a, b) => (a[field] < b[field] ? 1 : -1));
-    }
-    return dispatch({ type: CHANGE_RESULT, value: newList });
-  };
-
   return (
     <>
-      <Search onSearch={handleSearch} />
+      <Search />
       <div>
-        <Filters
-          handleSort={(field, type) =>
-            handleSort(state.resultSearch, field, type)
-          }
-        />
+        <Filters />
       </div>
       <div>
         <Card data={state.resultSearch} />
