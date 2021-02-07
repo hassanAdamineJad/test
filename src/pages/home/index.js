@@ -30,7 +30,6 @@ const Home = () => {
 
   const handleSearch = (e) => {
     const keyword = e.target.value;
-
     dispatch({
       type: CHANGE_RESULT,
       value: searchArrayWithKeyAndKeyword(state.city, "city", keyword)
@@ -44,12 +43,25 @@ const Home = () => {
         String(item[key]).toLowerCase().indexOf(keyword.toLowerCase()) > -1
     );
   };
+  const handleSort = (list, field, type) => {
+    let newList;
+    if (type === "asc") {
+      newList = list.sort((a, b) => (a[field] > b[field] ? 1 : -1));
+    } else {
+      newList = list.sort((a, b) => (a[field] < b[field] ? 1 : -1));
+    }
+    return dispatch({ type: CHANGE_RESULT, value: newList });
+  };
 
   return (
     <>
       <Search onSearch={handleSearch} />
       <div>
-        <Filters />
+        <Filters
+          handleSort={(field, type) =>
+            handleSort(state.resultSearch, field, type)
+          }
+        />
       </div>
       <div>
         <Card data={state.resultSearch} />
