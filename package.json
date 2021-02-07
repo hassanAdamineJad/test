@@ -1,4 +1,5 @@
 {
+  "homepage": "http://hassanAdamineJad.github.io/test",
   "name": "test",
   "version": "1.0.0",
   "main": "index.js",
@@ -7,12 +8,15 @@
     "start:dev": "webpack serve --mode development",
     "eslint-fix": "eslint --fix \"src/**/*.js\"",
     "build": "webpack --mode production",
-    "json:server": "json-server --watch ./mock/db.json --port 3001"
+    "json:server": "json-server --watch ./mock/db.json --port 3001",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
+    "gh-pages": "^3.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
