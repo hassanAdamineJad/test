@@ -63,6 +63,7 @@ export default function Header() {
 
   const handleSearch = (e) => {
     const keyword = e.target.value;
+    console.log(state.city);
     dispatch({
       type: CHANGE_RESULT,
       value: searchArrayWithKeyAndKeyword(state.city, "city", keyword)

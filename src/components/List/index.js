@@ -48,6 +48,9 @@ export default function List({ data, onClick, currentCityIndex }) {
               <Typography variant="body2" color="textSecondary" component="p">
                 Population Proper: {item.population_proper}
               </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                Distance: {item.distance}
+              </Typography>
             </CardContent>
           </CardActionArea>
         </Card>

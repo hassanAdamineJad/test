@@ -15,6 +15,8 @@ import { List, Filters } from "../../components";
 //UI
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Typography } from "@material-ui/core";
+// Helper
+import { calcDistanceByLatLng } from "../../utils/helper";
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   sideBar: {},
   result: {
     width: "100%",
-    maxHeight: "255px",
+    maxHeight: "295px",
     padding: theme.spacing(2.4, 1),
   },
   paper: {
@@ -49,13 +51,25 @@ const Home = () => {
   const fetchCity = async (city, params = "m") => {
     try {
       const result = await axios(`${BaseUrl}/${city}?${params}`);
-      dispatch({ type: GET_CITY, value: result.data });
-      dispatch({ type: CHANGE_RESULT, value: result.data });
+      const data = addDistanceToResult(result.data);
+
+      dispatch({ type: GET_CITY, value: data });
+      dispatch({
+        type: CHANGE_RESULT,
+        value: data,
+      });
     } catch (e) {
       console.log("e");
       dispatch({ type: GET_CITY_FAIL, value: e });
     }
   };
+  const addDistanceToResult = (cities) => {
+    return cities.map((city) => ({
+      ...city,
+      distance: calcDistanceByLatLng(city?.lat, city?.lng),
+    }));
+  };
+
   const handleReviewCity = (index) => {
     dispatch({ type: CURRENT_CITY_INDEX, value: index });
   };
@@ -94,6 +108,12 @@ const Home = () => {
               population:
               <Typography variant="h6" color="textPrimary" component="span">
                 {state.resultSearch[state.currentCityIndex]?.population}
+              </Typography>
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="div">
+              Distance:
+              <Typography variant="h6" color="textPrimary" component="span">
+                {state.resultSearch[state.currentCityIndex]?.distance}
               </Typography>
             </Typography>
             <Typography variant="body2" color="textSecondary" component="div">
