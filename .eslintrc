@@ -7,9 +7,10 @@
   },
   "rules": {
     "semi": "warn",
-    "indent": ["error", 2],
     "space-before-function-paren": 0,
-    "no-use-before-define": 0
+    "no-use-before-define": 0,
+    "indent": "off",
+    "no-unused-vars": "off"
   },
   "settings": {
     "react": {
