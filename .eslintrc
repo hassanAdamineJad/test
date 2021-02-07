@@ -10,7 +10,8 @@
     "space-before-function-paren": 0,
     "no-use-before-define": 0,
     "indent": "off",
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "quote-props": "off"
   },
   "settings": {
     "react": {

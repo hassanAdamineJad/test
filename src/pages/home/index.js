@@ -6,7 +6,7 @@ import { CHANGE_RESULT, GET_CITY, GET_CITY_FAIL } from "../../store/constant";
 import axios from "axios";
 import { BaseUrl } from "../../utils/config";
 // CMP
-import { Search, Card, Filters } from "../../components";
+import { Card, Filters } from "../../components";
 
 const Home = () => {
   const globalState = useContext(store);
@@ -28,7 +28,6 @@ const Home = () => {
 
   return (
     <>
-      <Search />
       <div>
         <Filters />
       </div>

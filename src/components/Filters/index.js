@@ -48,7 +48,7 @@ export default function Filters() {
   return (
     <Card className={classes.root}>
       <CardActions>
-        <Typography>Filters:</Typography>
+        <Typography>Sort By:</Typography>
         <Button
           size="small"
           variant="contained"
@@ -61,7 +61,7 @@ export default function Filters() {
             setTypeSortCity(!typeSortCity);
           }}
         >
-          Sort By City Name{" "}
+          City Name{" "}
           <i
             className={`${classes.arrow} ${
               typeSortCity ? classes.arrowUp : classes.arrowDown
@@ -80,7 +80,7 @@ export default function Filters() {
             setTypeSortPopulation(!typeSortPopulation);
           }}
         >
-          Sort By Population{" "}
+          Population{" "}
           <i
             className={`${classes.arrow} ${
               typeSortPopulation ? classes.arrowUp : classes.arrowDown
