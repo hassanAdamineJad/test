@@ -63,11 +63,12 @@ export default function Header() {
 
   const handleSearch = (e) => {
     const keyword = e.target.value;
-    console.log(state.city);
     dispatch({
       type: CHANGE_RESULT,
-      value: searchArrayWithKeyAndKeyword(state.city, "city", keyword)
-        .concat(searchArrayWithKeyAndKeyword(state.city, "admin_name", keyword))
+      value: searchArrayWithKeyAndKeyword(state.cities, "city", keyword)
+        .concat(
+          searchArrayWithKeyAndKeyword(state.cities, "admin_name", keyword)
+        )
         .filter(onlyUniqueArray),
     });
   };

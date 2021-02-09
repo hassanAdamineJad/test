@@ -11,7 +11,9 @@
     "no-use-before-define": 0,
     "indent": "off",
     "no-unused-vars": "off",
-    "quote-props": "off"
+    "quote-props": "off",
+    "no-alert": "off",
+    "no-throw-literal": "off"
   },
   "settings": {
     "react": {

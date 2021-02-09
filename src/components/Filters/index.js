@@ -1,10 +1,27 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 //Store
 import { store } from "../../store/store";
-import { CHANGE_RESULT, CURRENT_CITY_INDEX } from "../../store/constant";
+import {
+  CHANGE_RESULT,
+  CURRENT_CITY_INDEX,
+  GET_CITY,
+  GET_CURRENT_LOCATION,
+  GET_CURRENT_LOCATION_FAIL,
+} from "../../store/constant";
 // UI
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Card, CardActions, Typography } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  CardActions,
+  Typography,
+  Switch,
+  FormControlLabel,
+  Alert,
+} from "@material-ui/core";
+
+// Helper
+import { calcDistanceByLatLng, getGeoFindMe } from "../../utils/helper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +49,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 14,
   },
+  alert: {
+    padding: "10px",
+    backgroundColor: theme.palette.secondary.main,
+    color: "white",
+    marginLeft: "15px",
+  },
 }));
 export default function Filters() {
   const classes = useStyles();
@@ -40,6 +63,30 @@ export default function Filters() {
   const [typeSortCity, setTypeSortCity] = useState(true);
   const [typeSortPopulation, setTypeSortPopulation] = useState(true);
   const [typeSortDistance, setTypeSortDistance] = useState(true);
+  const [findNearCities, setFindNearCities] = useState(false);
+
+  useEffect(() => {
+    if (findNearCities) {
+      getFindNearCities();
+    } else {
+      console.log("else");
+    }
+  }, [findNearCities]);
+
+  const getFindNearCities = () => {
+    const cities = addDistanceToResult(state.cities);
+    dispatch({ type: GET_CITY, value: cities });
+    dispatch({
+      type: CHANGE_RESULT,
+      value: cities,
+    });
+  };
+  const addDistanceToResult = (cities) => {
+    return cities.map((city) => ({
+      ...city,
+      distance: calcDistanceByLatLng(city?.lat, city?.lng),
+    }));
+  };
 
   const handleSort = (list, field, type) => {
     let newList;
@@ -75,6 +122,16 @@ export default function Filters() {
     setTypeSortDistance(true);
     dispatch({ type: CURRENT_CITY_INDEX, value: 0 });
     return dispatch({ type: CHANGE_RESULT, value: state.city });
+  };
+
+  const handleFindCitiesNearMe = () => {
+    getGeoFindMe(handleSuccessGetLocation, handleErrorGetLocation);
+  };
+  const handleErrorGetLocation = (e) => {
+    dispatch({ type: GET_CURRENT_LOCATION_FAIL, value: e });
+  };
+  const handleSuccessGetLocation = (e) => {
+    dispatch({ type: GET_CURRENT_LOCATION, value: e });
   };
 
   return (
@@ -121,7 +178,6 @@ export default function Filters() {
             }`}
           />
         </Button>
-
         <Button
           size="small"
           variant="contained"
@@ -142,10 +198,22 @@ export default function Filters() {
             }`}
           />
         </Button>
-
+        <FormControlLabel
+          control={
+            <Switch
+              onChange={handleFindCitiesNearMe}
+              checked={findNearCities}
+            />
+          }
+          labelPlacement="start"
+          label="Find Near Cities"
+        />
         <Button size="small" variant="contained" onClick={handleReset}>
           Clear Filters
         </Button>
+        {state.currentLocationError.length > 0 && (
+          <div className={classes.alert}>{state.currentLocationError}</div>
+        )}
       </CardActions>
     </Card>
   );

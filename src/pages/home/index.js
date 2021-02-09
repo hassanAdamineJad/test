@@ -13,7 +13,7 @@ import { List, Filters } from "../../components";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Typography } from "@material-ui/core";
 // Helper
-import { calcDistanceByLatLng, showEmptyString } from "../../utils/helper";
+import { showEmptyString } from "../../utils/helper";
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -54,23 +54,16 @@ const Home = () => {
       fetch("/test/db.json")
         .then((res) => res.json())
         .then((data) => {
-          const city = addDistanceToResult(data?.nl);
-          dispatch({ type: GET_CITY, value: city });
+          const cities = data?.nl;
+          dispatch({ type: GET_CITY, value: cities });
           dispatch({
             type: CHANGE_RESULT,
-            value: city,
+            value: cities,
           });
         });
     } catch (e) {
-      console.log("e");
       dispatch({ type: GET_CITY_FAIL, value: e });
     }
-  };
-  const addDistanceToResult = (cities) => {
-    return cities.map((city) => ({
-      ...city,
-      distance: calcDistanceByLatLng(city?.lat, city?.lng),
-    }));
   };
 
   const handleReviewCity = (index) => {
@@ -101,12 +94,12 @@ const Home = () => {
           )}
         </Typography>
       </Typography>
-      <Typography variant="body2" color="textSecondary" component="div">
+      {/* <Typography variant="body2" color="textSecondary" component="div">
         Distance:
         <Typography variant="h6" color="textPrimary" component="span">
           {`${state.resultSearch[state.currentCityIndex]?.distance} km`}
         </Typography>
-      </Typography>
+      </Typography> */}
       <Typography variant="body2" color="textSecondary" component="div">
         Lat:
         <Typography variant="h6" color="textPrimary" component="span">
