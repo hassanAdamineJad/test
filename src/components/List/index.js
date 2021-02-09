@@ -6,6 +6,8 @@ import {
   CardContent,
   Typography,
 } from "@material-ui/core";
+// helper
+import { showEmptyString } from "../../utils/helper";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -43,10 +45,10 @@ export default function List({ data, onClick, currentCityIndex }) {
                 </Typography>
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
-                Population: {item.population}
+                Population: {showEmptyString(item.population)}
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
-                Population Proper: {item.population_proper}
+                Population Proper: {showEmptyString(item.population_proper)}
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
                 Distance: {`${item.distance} km`}

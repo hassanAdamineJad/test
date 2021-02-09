@@ -13,7 +13,7 @@ import { List, Filters } from "../../components";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Typography } from "@material-ui/core";
 // Helper
-import { calcDistanceByLatLng } from "../../utils/helper";
+import { calcDistanceByLatLng, showEmptyString } from "../../utils/helper";
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -96,7 +96,9 @@ const Home = () => {
       <Typography variant="body2" color="textSecondary" component="div">
         population:
         <Typography variant="h6" color="textPrimary" component="span">
-          {state.resultSearch[state.currentCityIndex]?.population}
+          {showEmptyString(
+            state.resultSearch[state.currentCityIndex]?.population
+          )}
         </Typography>
       </Typography>
       <Typography variant="body2" color="textSecondary" component="div">

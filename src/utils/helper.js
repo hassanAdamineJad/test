@@ -18,3 +18,5 @@ export const calcDistanceByLatLng = (lat, lng) => {
   const d = (R * c) / 1000; // in Km
   return d.toFixed(1);
 };
+
+export const showEmptyString = (string) => (string === "" ? "unknown" : string);
