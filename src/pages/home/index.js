@@ -51,7 +51,7 @@ const Home = () => {
 
   const fetchCity = async () => {
     try {
-      fetch("/db.json")
+      fetch("/test/db.json")
         .then((res) => res.json())
         .then((data) => {
           const city = addDistanceToResult(data?.nl);

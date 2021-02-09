@@ -124,7 +124,6 @@ export default function Filters() {
 
         <Button
           size="small"
-          active
           variant="contained"
           color="primary"
           onClick={() => {
