@@ -7,9 +7,6 @@ import {
   GET_CITY_FAIL,
   CURRENT_CITY_INDEX,
 } from "../../store/constant";
-// API
-import axios from "axios";
-import { BaseUrl } from "../../utils/config";
 // CMP
 import { List, Filters } from "../../components";
 //UI
@@ -45,19 +42,21 @@ const Home = () => {
   const globalState = useContext(store);
   const { state, dispatch } = globalState;
   useEffect(() => {
-    fetchCity("nl");
+    fetchCity();
   }, []);
 
-  const fetchCity = async (city, params = "m") => {
+  const fetchCity = async () => {
     try {
-      const result = await axios(`${BaseUrl}/${city}?${params}`);
-      const data = addDistanceToResult(result.data);
-
-      dispatch({ type: GET_CITY, value: data });
-      dispatch({
-        type: CHANGE_RESULT,
-        value: data,
-      });
+      fetch("/db.json")
+        .then((res) => res.json())
+        .then((data) => {
+          const city = addDistanceToResult(data?.nl);
+          dispatch({ type: GET_CITY, value: city });
+          dispatch({
+            type: CHANGE_RESULT,
+            value: city,
+          });
+        });
     } catch (e) {
       console.log("e");
       dispatch({ type: GET_CITY_FAIL, value: e });
