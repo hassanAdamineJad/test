@@ -3,8 +3,6 @@
   "homepage": "http://hassanAdamineJad.github.io/test/",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
-  "license": "MIT",
   "scripts": {
     "start:dev": "webpack serve --mode development",
     "eslint-fix": "eslint --fix \"src/**/*.js\"",
