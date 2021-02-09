@@ -134,7 +134,9 @@ const Home = () => {
             onClick={handleReviewCity}
           />
         </div>
-        <div className={classes.result}>{renderResult()}</div>
+        <div className={classes.result}>
+          {state.resultSearch.length > 0 && renderResult()}
+        </div>
       </div>
     </>
   );

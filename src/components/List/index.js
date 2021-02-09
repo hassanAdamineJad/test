@@ -6,14 +6,20 @@ import {
   CardContent,
   Typography,
 } from "@material-ui/core";
+import Lazyload from "react-lazyload";
 // helper
 import { showEmptyString } from "../../utils/helper";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  card: { marginBottom: theme.spacing(2) },
+  transition: "all 0.8s",
+  card: {
+    marginBottom: theme.spacing(2),
+    transition: "all 0.3s",
+  },
   active: {
     backgroundColor: theme.palette.secondary.main,
+    transition: "all 0.5s",
   },
 }));
 
@@ -25,37 +31,38 @@ export default function List({ data, onClick, currentCityIndex }) {
         {data.length}
       </Typography>
       {data.map((item, index) => (
-        <Card
-          className={`${classes.card} ${
-            index === currentCityIndex && classes.active
-          }`}
-          key={index}
-          onClick={() => onClick(index)}
-        >
-          <CardActionArea>
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {item.city}
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  component="div"
-                >
-                  {item.admin_name}
+        <Lazyload placeholder="loading..." key={index}>
+          <Card
+            className={`${classes.card} ${
+              index === currentCityIndex && classes.active
+            }`}
+            onClick={() => onClick(index)}
+          >
+            <CardActionArea>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {item.city}
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="div"
+                  >
+                    {item.admin_name}
+                  </Typography>
                 </Typography>
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Population: {showEmptyString(item.population)}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Population Proper: {showEmptyString(item.population_proper)}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Distance: {`${item.distance} km`}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  Population: {showEmptyString(item.population)}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  Population Proper: {showEmptyString(item.population_proper)}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  Distance: {`${item.distance} km`}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Lazyload>
       ))}
     </div>
   );

@@ -3,12 +3,12 @@ export const onlyUniqueArray = (value, index, self) => {
 };
 
 export const calcDistanceByLatLng = (lat, lng) => {
-  const currentLocation = { lat: 52.384306, lng: 4.844736 }; // ToDo
+  const currentLocation = getGeoFindMe();
   const R = 6371e3; // metres
-  const φ1 = (currentLocation.lat * Math.PI) / 180; // φ, λ in radians
+  const φ1 = (currentLocation?.lat * Math.PI) / 180; // φ, λ in radians
   const φ2 = (lat * Math.PI) / 180;
-  const Δφ = ((lat - currentLocation.lat) * Math.PI) / 180;
-  const Δλ = ((lng - currentLocation.lng) * Math.PI) / 180;
+  const Δφ = ((lat - currentLocation?.lat) * Math.PI) / 180;
+  const Δλ = ((lng - currentLocation?.lng) * Math.PI) / 180;
 
   const a =
     Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
@@ -17,6 +17,18 @@ export const calcDistanceByLatLng = (lat, lng) => {
 
   const d = (R * c) / 1000; // in Km
   return d.toFixed(1);
+};
+
+export const getGeoFindMe = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      let lat = position.coords.latitude;
+      let lng = position.coords.longitude;
+      return { lat, lng };
+    });
+  } else {
+    return { lat: 0, lng: 0 };
+  }
 };
 
 export const showEmptyString = (string) => (string === "" ? "unknown" : string);
