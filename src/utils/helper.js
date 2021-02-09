@@ -16,5 +16,5 @@ export const calcDistanceByLatLng = (lat, lng) => {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   const d = (R * c) / 1000; // in Km
-  return d.toFixed(1) + " km";
+  return d.toFixed(1);
 };

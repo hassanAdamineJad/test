@@ -19,6 +19,7 @@ import { calcDistanceByLatLng } from "../../utils/helper";
 const useStyles = makeStyles((theme) => ({
   filterBox: {
     flexGrow: 1,
+    backgroundColor: "red",
   },
   content: {
     display: "flex",
@@ -28,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     maxHeight: "295px",
     padding: theme.spacing(2.4, 1),
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
   },
   paper: {
     width: "100%",
@@ -72,7 +76,49 @@ const Home = () => {
   const handleReviewCity = (index) => {
     dispatch({ type: CURRENT_CITY_INDEX, value: index });
   };
-
+  const renderResult = () => (
+    <Paper component="div" elevation={3} className={classes.paper}>
+      <Typography variant="h5" component="div">
+        {state.resultSearch[state.currentCityIndex]?.city}
+      </Typography>
+      <Typography variant="body2" color="textSecondary" component="div">
+        Provence:
+        <Typography variant="h6" color="textPrimary" component="span">
+          {state.resultSearch[state.currentCityIndex]?.admin_name}
+        </Typography>
+      </Typography>
+      <Typography variant="body2" color="textSecondary" component="div">
+        capital:
+        <Typography variant="h6" color="textPrimary" component="span">
+          {state.resultSearch[state.currentCityIndex]?.capital}
+        </Typography>
+      </Typography>{" "}
+      <Typography variant="body2" color="textSecondary" component="div">
+        population:
+        <Typography variant="h6" color="textPrimary" component="span">
+          {state.resultSearch[state.currentCityIndex]?.population}
+        </Typography>
+      </Typography>
+      <Typography variant="body2" color="textSecondary" component="div">
+        Distance:
+        <Typography variant="h6" color="textPrimary" component="span">
+          {`${state.resultSearch[state.currentCityIndex]?.distance} km`}
+        </Typography>
+      </Typography>
+      <Typography variant="body2" color="textSecondary" component="div">
+        Lat:
+        <Typography variant="h6" color="textPrimary" component="span">
+          {state.resultSearch[state.currentCityIndex]?.lat}
+        </Typography>
+      </Typography>
+      <Typography variant="body2" color="textSecondary" component="div">
+        Lng:
+        <Typography variant="h6" color="textPrimary" component="span">
+          {state.resultSearch[state.currentCityIndex]?.lng}
+        </Typography>
+      </Typography>
+    </Paper>
+  );
   return (
     <>
       <div className={classes.filterBox}>
@@ -86,49 +132,7 @@ const Home = () => {
             onClick={handleReviewCity}
           />
         </div>
-        <div className={classes.result}>
-          <Paper component="div" elevation={3} className={classes.paper}>
-            <Typography variant="h5" component="div">
-              {state.resultSearch[state.currentCityIndex]?.city}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="div">
-              Provence:
-              <Typography variant="h6" color="textPrimary" component="span">
-                {state.resultSearch[state.currentCityIndex]?.admin_name}
-              </Typography>
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="div">
-              capital:
-              <Typography variant="h6" color="textPrimary" component="span">
-                {state.resultSearch[state.currentCityIndex]?.capital}
-              </Typography>
-            </Typography>{" "}
-            <Typography variant="body2" color="textSecondary" component="div">
-              population:
-              <Typography variant="h6" color="textPrimary" component="span">
-                {state.resultSearch[state.currentCityIndex]?.population}
-              </Typography>
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="div">
-              Distance:
-              <Typography variant="h6" color="textPrimary" component="span">
-                {state.resultSearch[state.currentCityIndex]?.distance}
-              </Typography>
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="div">
-              Lat:
-              <Typography variant="h6" color="textPrimary" component="span">
-                {state.resultSearch[state.currentCityIndex]?.lat}
-              </Typography>
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="div">
-              Lng:
-              <Typography variant="h6" color="textPrimary" component="span">
-                {state.resultSearch[state.currentCityIndex]?.lng}
-              </Typography>
-            </Typography>
-          </Paper>
-        </div>
+        <div className={classes.result}>{renderResult()}</div>
       </div>
     </>
   );

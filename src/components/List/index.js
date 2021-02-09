@@ -49,7 +49,7 @@ export default function List({ data, onClick, currentCityIndex }) {
                 Population Proper: {item.population_proper}
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
-                Distance: {item.distance}
+                Distance: {`${item.distance} km`}
               </Typography>
             </CardContent>
           </CardActionArea>

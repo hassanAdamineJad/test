@@ -7,7 +7,7 @@ import {
 } from "./constant";
 
 const initialState = {
-  city: [],
+  cities: [],
   resultSearch: [],
   currentCityIndex: 0,
   error: false,
