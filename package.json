@@ -1,7 +1,8 @@
 {
-  "homepage": "http://hassanAdamineJad.github.io/test",
   "name": "test",
+  "homepage": "http://hassanAdamineJad.github.io/test/",
   "version": "1.0.0",
+  "private": true,
   "main": "index.js",
   "license": "MIT",
   "scripts": {
