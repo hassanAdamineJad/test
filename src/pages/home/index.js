@@ -64,7 +64,7 @@ const Home = () => {
     dispatch({ type: GET_CITIES });
 
     try {
-      fetch("/test/db.json")
+      fetch("/db.json")
         .then((res) => res.json())
         .then((data) => {
           const cities = data?.nl;
