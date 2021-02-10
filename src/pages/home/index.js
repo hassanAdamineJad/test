@@ -3,15 +3,16 @@ import React, { useEffect, useContext } from "react";
 import { store } from "../../store/store";
 import {
   CHANGE_RESULT,
-  GET_CITY,
-  GET_CITY_FAIL,
+  GET_CITIES,
+  GET_CITIES_FAIL,
+  GET_CITIES_SUCCESS,
   CURRENT_CITY_INDEX,
 } from "../../store/constant";
 // CMP
 import { List, Filters } from "../../components";
 //UI
 import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper, Typography, CircularProgress } from "@material-ui/core";
 // Helper
 import { showEmptyString } from "../../utils/helper";
 
@@ -42,6 +43,12 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     padding: theme.spacing(2),
   },
+  loading: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "40vh",
+  },
 }));
 
 const Home = () => {
@@ -54,19 +61,21 @@ const Home = () => {
   }, []);
 
   const fetchCity = async () => {
+    dispatch({ type: GET_CITIES });
+
     try {
-      fetch("/db.json")
+      fetch("/test/db.json")
         .then((res) => res.json())
         .then((data) => {
           const cities = data?.nl;
-          dispatch({ type: GET_CITY, value: cities });
+          dispatch({ type: GET_CITIES_SUCCESS, value: cities });
           dispatch({
             type: CHANGE_RESULT,
             value: cities,
           });
         });
     } catch (e) {
-      dispatch({ type: GET_CITY_FAIL, value: e });
+      dispatch({ type: GET_CITIES_FAIL, value: e });
     }
   };
 
@@ -118,7 +127,12 @@ const Home = () => {
       </Typography>
     </Paper>
   );
-  return (
+
+  return state.loading ? (
+    <div className={classes.loading}>
+      <CircularProgress />
+    </div>
+  ) : (
     <>
       <div className={classes.filterBox}>
         <Filters />

@@ -5,7 +5,9 @@ import {
   CHANGE_KEYWORD_SEARCH,
   CHANGE_RESULT,
   CURRENT_CITY_INDEX,
-  GET_CITY,
+  GET_CITIES,
+  GET_CITIES_SUCCESS,
+  GET_CITIES_FAIL,
   GET_CURRENT_LOCATION,
   GET_CURRENT_LOCATION_FAIL,
 } from "../../store/constant";
@@ -90,17 +92,25 @@ export default function Filters() {
   }, [findNearCities]);
 
   const getFindNearCities = () => {
-    const cities = addDistanceToResult(state.cities);
-    const resultSearch = addDistanceToResult(state.resultSearch)
-      .filter((city) => {
-        return Number(city.distance) < 30;
-      })
-      .sort((a, b) => (Number(a["distance"]) > Number(b["distance"]) ? 1 : -1));
-    dispatch({ type: GET_CITY, value: cities });
-    dispatch({
-      type: CHANGE_RESULT,
-      value: resultSearch,
-    });
+    dispatch({ type: GET_CITIES });
+
+    try {
+      const cities = addDistanceToResult(state.cities);
+      const resultSearch = addDistanceToResult(state.resultSearch)
+        .filter((city) => {
+          return Number(city.distance) < 30;
+        })
+        .sort((a, b) =>
+          Number(a["distance"]) > Number(b["distance"]) ? 1 : -1
+        );
+      dispatch({ type: GET_CITIES_SUCCESS, value: cities });
+      dispatch({
+        type: CHANGE_RESULT,
+        value: resultSearch,
+      });
+    } catch (e) {
+      dispatch({ type: GET_CITIES_FAIL, value: e });
+    }
   };
   const addDistanceToResult = (cities) => {
     return cities.map((city) => ({
