@@ -27,6 +27,7 @@ export const getGeoFindMe = (successCallback, errorCallback) => {
     (e) => successGetLocation(e, successCallback),
     (e) => errorGetLocation(e, errorCallback)
   );
+  // successCallback({ lat: 52.3676, lng: 4.9041 }); // for test (Center Amsterdam)
 };
 function successGetLocation(position, callback) {
   let lat = position.coords.latitude;
@@ -53,3 +54,10 @@ function errorGetLocation(error, callback) {
 }
 
 export const showEmptyString = (string) => (string === "" ? "unknown" : string);
+
+export const searchArrayWithKeyAndKeyword = (array, key, keyword) => {
+  return array.filter(
+    (item) =>
+      String(item[key]).toLowerCase().indexOf(keyword.toLowerCase()) > -1
+  );
+};

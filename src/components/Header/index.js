@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 //Store
 import { store } from "../../store/store";
-import { CHANGE_RESULT } from "../../store/constant";
+import { CHANGE_RESULT, CHANGE_KEYWORD_SEARCH } from "../../store/constant";
 //UI
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Container, InputBase } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 //Helper
-import { onlyUniqueArray } from "../../utils/helper";
+import {
+  onlyUniqueArray,
+  searchArrayWithKeyAndKeyword,
+} from "../../utils/helper";
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -63,6 +66,7 @@ export default function Header() {
 
   const handleSearch = (e) => {
     const keyword = e.target.value;
+    dispatch({ type: CHANGE_KEYWORD_SEARCH, value: keyword });
     dispatch({
       type: CHANGE_RESULT,
       value: searchArrayWithKeyAndKeyword(state.cities, "city", keyword)
@@ -71,13 +75,6 @@ export default function Header() {
         )
         .filter(onlyUniqueArray),
     });
-  };
-
-  const searchArrayWithKeyAndKeyword = (array, key, keyword) => {
-    return array.filter(
-      (item) =>
-        String(item[key]).toLowerCase().indexOf(keyword.toLowerCase()) > -1
-    );
   };
 
   return (
@@ -97,6 +94,7 @@ export default function Header() {
                   input: classes.inputInput,
                 }}
                 inputProps={{ "aria-label": "search" }}
+                value={state.keyword}
               />
             </div>
             <div className={classes.grow} />

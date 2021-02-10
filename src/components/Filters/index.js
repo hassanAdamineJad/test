@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 //Store
 import { store } from "../../store/store";
 import {
+  CHANGE_KEYWORD_SEARCH,
   CHANGE_RESULT,
   CURRENT_CITY_INDEX,
   GET_CITY,
@@ -21,7 +22,12 @@ import {
 } from "@material-ui/core";
 
 // Helper
-import { calcDistanceByLatLng, getGeoFindMe } from "../../utils/helper";
+import {
+  calcDistanceByLatLng,
+  getGeoFindMe,
+  searchArrayWithKeyAndKeyword,
+  onlyUniqueArray,
+} from "../../utils/helper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,29 +68,48 @@ export default function Filters() {
   const { state, dispatch } = globalState;
   const [typeSortCity, setTypeSortCity] = useState(true);
   const [typeSortPopulation, setTypeSortPopulation] = useState(true);
-  const [typeSortDistance, setTypeSortDistance] = useState(true);
   const [findNearCities, setFindNearCities] = useState(false);
 
   useEffect(() => {
     if (findNearCities) {
       getFindNearCities();
     } else {
-      console.log("else");
+      dispatch({
+        type: CHANGE_RESULT,
+        value: searchArrayWithKeyAndKeyword(state.cities, "city", state.keyword)
+          .concat(
+            searchArrayWithKeyAndKeyword(
+              state.cities,
+              "admin_name",
+              state.keyword
+            )
+          )
+          .filter(onlyUniqueArray),
+      }); // reset Distance
     }
   }, [findNearCities]);
 
   const getFindNearCities = () => {
     const cities = addDistanceToResult(state.cities);
+    const resultSearch = addDistanceToResult(state.resultSearch)
+      .filter((city) => {
+        return Number(city.distance) < 30;
+      })
+      .sort((a, b) => (Number(a["distance"]) > Number(b["distance"]) ? 1 : -1));
     dispatch({ type: GET_CITY, value: cities });
     dispatch({
       type: CHANGE_RESULT,
-      value: cities,
+      value: resultSearch,
     });
   };
   const addDistanceToResult = (cities) => {
     return cities.map((city) => ({
       ...city,
-      distance: calcDistanceByLatLng(city?.lat, city?.lng),
+      distance: calcDistanceByLatLng(
+        city?.lat,
+        city?.lng,
+        state.currentLocation
+      ),
     }));
   };
 
@@ -96,42 +121,29 @@ export default function Filters() {
       newList = list.sort((a, b) => (a[field] < b[field] ? 1 : -1));
     }
     dispatch({ type: CURRENT_CITY_INDEX, value: 0 });
-    return dispatch({ type: CHANGE_RESULT, value: newList });
+    dispatch({ type: CHANGE_RESULT, value: newList });
   };
-  const handleCitiesNearMe = (list, field, type) => {
-    let newList;
-    if (type === "asc") {
-      newList = list
-        .filter((city) => {
-          return Number(city.distance) < 30;
-        })
-        .sort((a, b) => (Number(a[field]) > Number(b[field]) ? 1 : -1));
-    } else {
-      newList = list
-        .filter((city) => {
-          return city.distance < 30;
-        })
-        .sort((a, b) => (Number(a[field]) < Number(b[field]) ? 1 : -1));
-    }
-    dispatch({ type: CURRENT_CITY_INDEX, value: 0 });
-    return dispatch({ type: CHANGE_RESULT, value: newList });
-  };
+
   const handleReset = () => {
     setTypeSortCity(true);
     setTypeSortPopulation(true);
-    setTypeSortDistance(true);
+    setFindNearCities(false);
     dispatch({ type: CURRENT_CITY_INDEX, value: 0 });
-    return dispatch({ type: CHANGE_RESULT, value: state.city });
+    dispatch({ type: CHANGE_KEYWORD_SEARCH, value: "" });
+    dispatch({ type: GET_CURRENT_LOCATION_FAIL, value: "" });
+    dispatch({ type: CHANGE_RESULT, value: state.cities });
   };
 
   const handleFindCitiesNearMe = () => {
+    setFindNearCities(!findNearCities);
     getGeoFindMe(handleSuccessGetLocation, handleErrorGetLocation);
   };
   const handleErrorGetLocation = (e) => {
     dispatch({ type: GET_CURRENT_LOCATION_FAIL, value: e });
+    setFindNearCities(false);
   };
-  const handleSuccessGetLocation = (e) => {
-    dispatch({ type: GET_CURRENT_LOCATION, value: e });
+  const handleSuccessGetLocation = (object) => {
+    dispatch({ type: GET_CURRENT_LOCATION, value: object });
   };
 
   return (
@@ -149,6 +161,7 @@ export default function Filters() {
               typeSortCity ? "asc" : "desc"
             );
             setTypeSortCity(!typeSortCity);
+            setTypeSortPopulation(true);
           }}
         >
           City Name{" "}
@@ -169,6 +182,7 @@ export default function Filters() {
               typeSortPopulation ? "asc" : "desc"
             );
             setTypeSortPopulation(!typeSortPopulation);
+            setTypeSortCity(true);
           }}
         >
           Population{" "}
@@ -178,26 +192,7 @@ export default function Filters() {
             }`}
           />
         </Button>
-        <Button
-          size="small"
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            handleCitiesNearMe(
-              state.resultSearch,
-              "distance",
-              typeSortDistance ? "asc" : "desc"
-            );
-            setTypeSortDistance(!typeSortDistance);
-          }}
-        >
-          Near Me{" "}
-          <i
-            className={`${classes.arrow} ${
-              typeSortDistance ? classes.arrowUp : classes.arrowDown
-            }`}
-          />
-        </Button>
+
         <FormControlLabel
           control={
             <Switch

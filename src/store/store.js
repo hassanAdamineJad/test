@@ -6,6 +6,7 @@ import {
   CURRENT_CITY_INDEX,
   GET_CURRENT_LOCATION,
   GET_CURRENT_LOCATION_FAIL,
+  CHANGE_KEYWORD_SEARCH,
 } from "./constant";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   error: false,
   currentLocation: { lat: 0, lng: 0 },
   currentLocationError: "",
+  keyword: "",
 };
 const store = createContext(initialState);
 const { Provider } = store;
@@ -40,6 +42,11 @@ const StateProvider = ({ children }) => {
         return {
           ...state,
           currentLocationError: action.value,
+        };
+      case CHANGE_KEYWORD_SEARCH:
+        return {
+          ...state,
+          keyword: action.value,
         };
       default:
         throw new Error();

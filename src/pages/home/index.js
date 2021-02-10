@@ -24,7 +24,11 @@ const useStyles = makeStyles((theme) => ({
   content: {
     display: "flex",
   },
-  sideBar: {},
+  sideBar: {
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+    },
+  },
   result: {
     width: "100%",
     maxHeight: "295px",
@@ -51,7 +55,7 @@ const Home = () => {
 
   const fetchCity = async () => {
     try {
-      fetch("/test/db.json")
+      fetch("/db.json")
         .then((res) => res.json())
         .then((data) => {
           const cities = data?.nl;
@@ -128,7 +132,7 @@ const Home = () => {
           />
         </div>
         <div className={classes.result}>
-          {state.resultSearch.length > 0 && renderResult()}
+          {state.resultSearch?.length > 0 && renderResult()}
         </div>
       </div>
     </>

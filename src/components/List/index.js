@@ -28,7 +28,7 @@ export default function List({ data, onClick, currentCityIndex }) {
   return (
     <div className={classes.root}>
       <Typography variant="body2" color="textSecondary" component="p">
-        {data.length}
+        {data?.length > 0 ? `Results:${data?.length}` : "Result: Not Found :("}
       </Typography>
       {data.map((item, index) => (
         <Lazyload placeholder="loading..." key={index}>
